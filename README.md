@@ -17,6 +17,13 @@ The experiments have been carried out with a group of 30 volunteers within an ag
 
 The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.
 
+For each observation it is provided:
+- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration.
+- Triaxial Angular velocity from the gyroscope. 
+- A 561-feature vector with time and frequency domain variables. 
+- Its activity label. 
+- An identifier of the subject who carried out the experiment.
+
 # Project tasks
 1) Merges the training and the test sets to create one data set.
 2) Extracts only the measurements on the mean and standard deviation for each measurement.
@@ -33,34 +40,47 @@ The sensor signals (accelerometer and gyroscope) were pre-processed by applying 
     </tr>
     <tr>
         <td valign=top>activity_labels.txt</td>
-        <td>File containing six rows of data, where each row contains an activity identifier and an activity description, a text label to associate with the y_train.txt and y_test.txt files. The numeric identifier and text labels are separated by a blank space. The activity label words are delmited by an underscore when an activity contains more than a single word. </td>
+        <td>This file contains activity names and their corresponding ID. The IDs are used in the y_test.txt and y_train.txt files. </td>
     </tr>
     <tr>
         <td valign=top>features.txt</td>
-        <td>File listing the 561 different measurements taken from the smartphone each time a person was measured for one of the six activities monitored during the experiment. Data is listed in one row per measurement, where the line number in the file is the assumed key to match against the test and training data files. </td>
+        <td>This file lists the 561 different measurements taken from the smartphone. Each observation/row reprents each time a person measured for one of the six activities monitored during the experiment. Refer to my CodeBook.md.</td>
     </tr>
     <tr>
         <td valign=top>subject_test.txt</td>
-        <td>File containing one column of data that identifies the subject (i.e. person) corresponding to each row of data in the test measurement X_test.txt file.  </td>
+        <td>This file contains subject (person) ID corresponding to each row of data in the X_test.txt file.  </td>
     </tr>
     <tr>
         <td valign=top>X_test.txt</td>
-        <td> File containing 561 measurements for each observed experiment on one of the six activities for a specific person.</td>
+        <td> This file contains 561 measurements for each person in the test group on one of the six activities.</td>
     </tr>
     <tr>
         <td valign=top>y_test.txt</td>
-        <td>File containing one column of data that identifies the activity corresponding to each row of data in the test measurement X_test.txt file.</td>
+        <td>This file contains activity IDs corresponding to each row of data in the X_test.txt file.</td>
     </tr>
     <tr>
         <td valign=top>subject_train.txt</td>
-        <td>File containing one column of data that identifies the subject (i.e. person) corresponding to each row of data in the test measurement X_train.txt file.  </td>
+        <td>This file contains subject (person) IDs corresponding to each row of data in the X_train.txt file.  </td>
     </tr>
     <tr>
         <td valign=top>X_train.txt</td>
-        <td> File containing 561 measurements for each observed experiment on one of the six activities for a specific person.</td>
+        <td> This file contains 561 measurements for each person in the training group on one of the six activities.</td>
     </tr>
     <tr>
         <td valign=top>y_train.txt</td>
-        <td>File containing one column of data that identifies the activity corresponding to each row of data in the test measurement X_train.txt file.</td>
+        <td>This file contains activity IDs corresponding to each row of data in the X_train.txt file.</td>
     </tr>
 </table>
+
+# Data Processing
+The basic idea is to combine the above data files into one single data frame in R and select out columns corresponding to mean and standard deviation measurements. Based on this, the average of each variable for each activity and each subject can be computed.
+1) Download data zip file and unzip it to the working directory.
+2) Read activity_labels and features files. Remove some unnecessary characters.
+3) Read test data files. Select mean and std columns.
+4) Combine subject IDs, activity labels and selected data into one file.
+5) Read training data files. Select mean and std columns.
+6) Combine subject IDs, activity labels and selected data into one file.
+7) Merge test data and training data.
+8) Group data by activity name and subject ID.
+9) Calculate mean of each variable for each activity and each subject.
+10) Generate a new table to store the final results.
